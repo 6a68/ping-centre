@@ -2,7 +2,6 @@
 
 require("isomorphic-fetch");
 const commonSchema = require("./schemas/commonSchema");
-const Joi = require("joi-browser");
 const uuid = require("uuid");
 const config = require("config");
 
@@ -21,7 +20,7 @@ class PingCentre {
 
   validate(payload) {
     return new Promise((resolve, reject) => {
-      Joi.validate(payload, this._schema, (err, value) => {
+      this._schema.validate(payload, (err, value) => {
         if (err) {
           reject(new Error(`Invalid payload ${JSON.stringify(value)}: ${err}.`));
         } else {

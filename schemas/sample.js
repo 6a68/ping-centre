@@ -1,10 +1,10 @@
 "use strict";
 
-const Joi = require("joi-browser");
+const yup = require("yup");
 const commonSchema = require("./commonSchema");
 
-const schema = commonSchema.keys({
-  value: Joi.boolean().required(),
-}).options({allowUnknown: true});
+const schema = commonSchema.shape({
+  value: yup.boolean().required(),
+});
 
 module.exports = schema;
