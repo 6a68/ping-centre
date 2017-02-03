@@ -21,7 +21,7 @@ describe("Ping Centre Throws", function() {
   });
 });
 
-describe("Joi Handles Various Cases", function() {
+describe("yup Handles Various Cases", function() {
   it("rejects undefined data", function(done) {
     const promise = pingClient.sendPing();
     promise.should.be.rejected.notify(done);

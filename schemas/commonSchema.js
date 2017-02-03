@@ -1,11 +1,11 @@
 "use strict";
 
-const Joi = require("joi-browser");
+const yup = require("yup");
 
-const schema = Joi.object().keys({
-  client_id: Joi.string().required(),
-  topic: Joi.string().required(),
-  event_type: Joi.string().required(),
-}).options({allowUnknown: true});
+const schema = yup.object().required().strict().shape({
+  client_id: yup.string().required(),
+  topic: yup.string().required(),
+  event_type: yup.string().required(),
+});
 
 module.exports = schema;

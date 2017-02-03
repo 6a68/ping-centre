@@ -1,7 +1,6 @@
 /* global expect */
 "use strict";
 
-const Joi = require("joi-browser");
 const PingCentre = require("../../ping-centre");
 const testPilotSchema = require("../../schemas/testpilot.js");
 
@@ -50,58 +49,39 @@ describe("The 'testpilot' Schema", function() {
   it("is recognized by Ping Centre", function() {
     expect(() => { new PingCentre("testpilot"); }).to.not.throw();
   });
-  it("should accept a valid testpilot ping", function(done) {
-    // `err` will be passed to done, failing if truthy.
-    Joi.validate(samplePing, testPilotSchema, done);
+  it("should accept a valid testpilot ping", function() {
+    testPilotSchema.validate(samplePing).should.be.fulfilled;
   });
-  it("should reject if required field topic is incorrect", function(done) {
+  it("should reject if required field topic is incorrect", function() {
     const ping = clone(samplePing);
     ping.topic = "foo";
-    Joi.validate(ping, testPilotSchema, function(err) {
-      expect(err).to.exist;
-      done();
-    });
+    testPilotSchema.validate(ping).should.be.rejected;
   });
   requiredStrings.forEach((field) => {
-    it(`should reject if required field ${field} is missing`, function(done) {
+    it(`should reject if required field ${field} is missing`, function() {
       const ping = clone(samplePing);
       delete ping[field];
-      Joi.validate(ping, testPilotSchema, function(err) {
-        expect(err).to.exist;
-        done();
-      });
+      testPilotSchema.validate(ping).should.be.rejected;
     });
-    it(`should reject if required field ${field} is empty`, function(done) {
+    it(`should reject if required field ${field} is empty`, function() {
       const ping = clone(samplePing);
       ping[field] = "";
-      Joi.validate(ping, testPilotSchema, function(err) {
-        expect(err).to.exist;
-        done();
-      });
+      testPilotSchema.validate(ping).should.be.rejected;
     });
   });
-  it("should reject if required field client_time is missing", function(done) {
+  it("should reject if required field client_time is missing", function() {
     const ping = clone(samplePing);
     delete ping.client_time;
-    Joi.validate(ping, testPilotSchema, function(err) {
-      expect(err).to.exist;
-      done();
-    });
+    testPilotSchema.validate(ping).should.be.rejected;
   });
-  it("should reject if required field client_time is a Date object", function(done) {
+  it("should reject if required field client_time is a Date object", function() {
     const ping = clone(samplePing);
     ping.client_time = new Date();
-    Joi.validate(ping, testPilotSchema, function(err) {
-      expect(err).to.exist;
-      done();
-    });
+    testPilotSchema.validate(ping).should.be.rejected;
   });
-  it("should reject if required field client_time is a Date ISO string", function(done) {
+  it("should reject if required field client_time is a Date ISO string", function() {
     const ping = clone(samplePing);
     ping.client_time = new Date().toISOString();
-    Joi.validate(ping, testPilotSchema, function(err) {
-      expect(err).to.exist;
-      done();
-    });
+    testPilotSchema.validate(ping).should.be.rejected;
   });
 });
