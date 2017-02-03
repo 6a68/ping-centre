@@ -4,7 +4,10 @@ require("isomorphic-fetch");
 const commonSchema = require("./schemas/commonSchema");
 const Joi = require("joi");
 const uuid = require("uuid");
-const config = require("config");
+
+const defaultEndpoint = (process.env.NODE_ENV === "production") ?
+  "https://tiles.services.mozilla.com/v3/links/ping-centre" :
+  "https://onyx_tiles.stage.mozaws.net/v3/links/ping-centre";
 
 class PingCentre {
   constructor(topic, clientID, pingEndpoint) {
@@ -13,7 +16,7 @@ class PingCentre {
     }
     this._topic = topic;
     this._clientID = clientID || uuid();
-    this._pingEndpoint = pingEndpoint || config.get("endpoint");
+    this._pingEndpoint = pingEndpoint || defaultEndpoint;
 
     const schema = require(`./schemas/${topic}`);
     this._schema = schema || commonSchema;
